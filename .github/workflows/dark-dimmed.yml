@@ -1,0 +1,27 @@
+name: user-statistician
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  push:
+    branches: [ main, master ]
+    paths: [ '.github/workflows/dark-dimmed.yml' ]
+  workflow_dispatch:
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+      
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Generate the user stats image
+      uses: cicirello/user-statistician@v1
+      with:
+        colors: dark-dimmed
+        custom-title: My GitHub Statistics
+        hide-keys: starredBy, forkedBy, watchedBy, archived, templates
+        max-languages: 100
+        animated-language-chart: true
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
